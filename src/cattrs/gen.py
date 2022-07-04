@@ -36,7 +36,11 @@ class AttributeOverride:
     omit: bool = False  # Omit the field completely.
 
 
-def override(omit_if_default=None, rename=None, omit: bool = False):
+def override(
+    omit_if_default: Optional[bool] = None,
+    rename: Optional[bool] = None,
+    omit: bool = False,
+):
     return AttributeOverride(omit_if_default=omit_if_default, rename=rename, omit=omit)
 
 
