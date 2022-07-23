@@ -31,38 +31,8 @@ jobs:
           python -m site
           python -m pip install --upgrade pip wheel poetry==1.2.0a2
           python -m pip install --upgrade coverage[toml] virtualenv tox tox-gh-actions
-      - name: "Run tox targets for ${{ matrix.python-version }}"
-        run: "python -m tox"
+          poetry install 
+      - name: "Run bench targets for ${{ matrix.python-version }}"
+        run: "poetry run pytest bench/test_rename.py --benchmark-warmup=on"
 
-      # We always use a modern Python version for combining coverage to prevent
-      # parsing errors in older versions for modern code.
-      - uses: "actions/setup-python@v2"
-        with:
-          python-version: "3.9"
 
-      - name: "Upload coverage to Codecov"
-        # if: "contains(env.USING_COVERAGE, matrix.python-version)"
-        uses: "codecov/codecov-action@v1"
-        with:
-          fail_ci_if_error: true
-
-  package:
-    name: "Build & verify package"
-    runs-on: "ubuntu-latest"
-
-    steps:
-      - uses: "actions/checkout@v2"
-      - uses: "actions/setup-python@v2"
-        with:
-          python-version: "3.9"
-
-      - name: "Install poetry, check-wheel-content, and twine"
-        run: "python -m pip install poetry==1.2.0a2 twine check-wheel-contents"
-      - name: "Build package"
-        run: "poetry build"
-      - name: "List result"
-        run: "ls -l dist"
-      - name: "Check wheel contents"
-        run: "check-wheel-contents --toplevel cattr,cattrs dist/*.whl"
-      - name: "Check long_description"
-        run: "python -m twine check dist/*"
