@@ -33,6 +33,6 @@ jobs:
           python -m pip install --upgrade coverage[toml] virtualenv tox tox-gh-actions
           poetry install 
       - name: "Run bench targets for ${{ matrix.python-version }}"
-        run: "poetry run pytest bench --benchmark-warmup=on"
+        run: "poetry run pytest bench/test_rename.py --benchmark-warmup=on"
 
 
